@@ -1,7 +1,7 @@
 use crate::{
     constants::{BYTES_TO_OVERFLOW_U64, MAX_PRECISION, MAX_STR_BUFFER_SIZE, OVERFLOW_U96, WILL_OVERFLOW_U64},
     error::{tail_error, Error},
-    ops::array::{add_by_internal_flattened, add_one_internal, div_by_u32, is_all_zero, mul_by_u32},
+    ops::array::{add_by_internal3, add_one_internal, div_by_u32, is_all_zero, mul_by_u32},
     Decimal,
 };
 
@@ -125,7 +125,6 @@ pub(crate) fn fmt_scientific_notation(
 #[inline]
 pub(crate) fn parse_str_radix_10(str: &str) -> Result<Decimal, crate::Error> {
     let bytes = str.as_bytes();
-    // handle the sign
 
     if bytes.len() < BYTES_TO_OVERFLOW_U64 {
         parse_str_radix_10_dispatch::<false>(bytes)
@@ -181,7 +180,13 @@ fn non_digit_dispatch_u64<const POINT: bool, const NEG: bool, const HAS: bool, c
 }
 
 #[inline]
-fn byte_dispatch_u64<const POINT: bool, const NEG: bool, const HAS: bool, const BIG: bool, const FIRST: bool>(
+fn byte_dispatch_u64<
+    const POINT: bool, // a decimal point has been seen
+    const NEG: bool,   // we've encountered a '-' and the number is negative
+    const HAS: bool,   // a digit has been encountered (when HAS is false it's invalid)
+    const BIG: bool,   // a number that uses 96 bits instead of only 64 bits
+    const FIRST: bool, // true if it is the first byte in the string
+>(
     bytes: &[u8],
     data64: u64,
     scale: u8,
@@ -604,7 +609,7 @@ pub(crate) fn parse_str_radix_n(str: &str, radix: u32) -> Result<Decimal, crate:
             data[0] = tmp[0];
             data[1] = tmp[1];
             data[2] = tmp[2];
-            let carry = add_by_internal_flattened(&mut data, *digit);
+            let carry = add_by_internal3(&mut data, *digit);
             if carry > 0 {
                 // Highly unlikely scenario which is more indicative of a bug
                 return Err(Error::from("Invalid decimal: overflow from carry"));

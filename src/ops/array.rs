@@ -93,7 +93,7 @@ pub(crate) fn add_by_internal(value: &mut [u32], by: &[u32]) -> u32 {
     carry as u32
 }
 
-pub(crate) fn add_by_internal_flattened(value: &mut [u32; 3], by: u32) -> u32 {
+pub(crate) fn add_by_internal3(value: &mut [u32; 3], by: u32) -> u32 {
     let mut carry: u64;
     let mut sum: u64;
     sum = u64::from(value[0]) + u64::from(by);
