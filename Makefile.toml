@@ -151,6 +151,10 @@ args = ["test", "--workspace", "--features=default"]
 command = "cargo"
 args = ["test", "--workspace", "--features=legacy-ops"]
 
+[tasks.test-tail-call-opt]
+command = "cargo"
+args = ["test", "--workspace", "--features=tail-call-opt"]
+
 [tasks.test-maths]
 dependencies = [
     "test-maths-default",

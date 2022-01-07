@@ -60,6 +60,7 @@ serde-bincode = ["serde-str"] # Backwards compatability
 serde-float = ["serde"]
 serde-str = ["serde"]
 std = []
+tail-call-opt = []
 tokio-pg = ["db-tokio-postgres"] # Backwards compatability
 
 [workspace]

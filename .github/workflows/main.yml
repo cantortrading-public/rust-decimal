@@ -83,6 +83,12 @@ jobs:
           command: make
           args: test-legacy-ops
 
+      - name: Run tail call optimization tests
+        uses: actions-rs/cargo@v1
+        with:
+          command: make
+          args: test-tail-call-opt
+
       - name: Run mathematical function tests
         uses: actions-rs/cargo@v1
         with:
