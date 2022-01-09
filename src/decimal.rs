@@ -1508,6 +1508,12 @@ impl Decimal {
             crate::str::parse_str_radix_n(str, radix)
         }
     }
+
+    #[doc(hidden)]
+    // Added for benchmarking performance difference from parse_str_radix_10
+    pub fn from_str_radix_n(str: &str, radix: u32) -> Result<Self, crate::Error> {
+        crate::str::parse_str_radix_n(str, radix)
+    }
 }
 
 impl Default for Decimal {
