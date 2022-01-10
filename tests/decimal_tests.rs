@@ -3038,6 +3038,9 @@ fn it_can_parse_different_radix() {
         ("78", 10, true, "78"),
         ("78", 8, false, ""),
         ("101", 2, true, "5"),
+        ("22222", 3, true, "242"),
+        ("1234", 5, true, "194"),
+        ("a_a_a", 11, true, "1330"),
         // Parse base 2
         ("1111_1111_1111_1111_1111_1111_1111_1111", 2, true, "4294967295"),
         // Max supported value

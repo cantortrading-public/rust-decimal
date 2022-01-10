@@ -191,6 +191,16 @@ fn decimal_from_str(b: &mut test::Bencher) {
 }
 
 #[bench]
+fn decimal_from_str_radix_n(b: &mut test::Bencher) {
+    b.iter(|| {
+        for s in SAMPLE_STRS {
+            let result = Decimal::from_str_radix_n(s, 10).unwrap();
+            test::black_box(result);
+        }
+    })
+}
+
+#[bench]
 fn decimal_to_string(b: &mut test::Bencher) {
     let decimals: Vec<Decimal> = SAMPLE_STRS.iter().map(|s| Decimal::from_str(s).unwrap()).collect();
 
